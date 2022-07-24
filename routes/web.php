@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\WebsiteController;
 use Illuminate\Foundation\Application;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -17,6 +18,10 @@ use Inertia\Inertia;
 */
 
 Route::get('/', function () {
+    if (auth()->user()) {
+        return Redirect::route('dashboard');
+    }
+
     return Inertia::render('Auth/Login');
 });
 
