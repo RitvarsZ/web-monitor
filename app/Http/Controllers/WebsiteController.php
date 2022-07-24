@@ -54,6 +54,8 @@ class WebsiteController extends Controller
      */
     public function show(Website $website)
     {
+        $website->load('statuses');
+
         return Inertia::render('Website/Show', [
             'website' => $website,
         ]);

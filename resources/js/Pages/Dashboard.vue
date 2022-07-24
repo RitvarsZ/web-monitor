@@ -2,6 +2,7 @@
 import BreezeAuthenticatedLayout from '@/Layouts/Authenticated.vue';
 import { Head, Link } from '@inertiajs/inertia-vue3';
 import Button from '@/Components/Button.vue';
+import getStatusColor from '@/Composables/StatusColor';
 
 const props = defineProps({
     websites: {
@@ -10,20 +11,6 @@ const props = defineProps({
     }
 });
 
-const getStatusColor = (status) => {
-    switch (true) {
-        case status >= 100 && status < 200:
-            return 'text-blue-500';
-        case status >= 200 && status < 300:
-            return 'text-green-500';
-        case status >= 300 && status < 400:
-            return 'text-yellow-500';
-        case status >= 400 && status < 500:
-            return 'text-red-500';
-        default:
-            return 'text-black-500';
-    }
-};
 </script>
 
 <template>
@@ -58,13 +45,13 @@ const getStatusColor = (status) => {
                                 <p class="text-base leading-6 text-gray-500">
                                     {{ website.url }}
                                 </p>
-                                <p class="font-bold" :class="getStatusColor(website.latest_status.status)">
+                                <p v-if="website.latest_status" class="font-bold" :class="getStatusColor(website.latest_status.status)">
                                     {{ website.latest_status.status}}
                                 </p>
-                                <p>
+                                <p v-if="website.latest_status">
                                     {{ website.latest_status.error }}
                                 </p>
-                                <p class="text-sm">
+                                <p v-if="website.latest_status" class="text-sm">
                                     {{ new Date(website.latest_status.created_at).toLocaleString() }}
                                 </p>
                                 <div class="text-right text-gray-500">

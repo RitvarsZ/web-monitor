@@ -13,7 +13,7 @@ class Website extends Model
         'name',
         'url',
     ];
-    
+
     public function latestStatus()
     {
         return $this->hasOne(WebsiteStatus::class)->latest();
@@ -21,6 +21,6 @@ class Website extends Model
 
     public function statuses()
     {
-        return $this->hasMany(WebsiteStatus::class);
+        return $this->hasMany(WebsiteStatus::class)->orderBy('created_at', 'desc');
     }
 }

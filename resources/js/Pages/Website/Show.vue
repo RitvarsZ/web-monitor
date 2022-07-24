@@ -2,6 +2,7 @@
 import BreezeAuthenticatedLayout from '@/Layouts/Authenticated.vue';
 import { Head, Link } from '@inertiajs/inertia-vue3';
 import Button from '@/Components/Button.vue';
+import getStatusColor from '@/Composables/StatusColor';
 
 const props = defineProps({
     website: {
@@ -47,6 +48,21 @@ const props = defineProps({
                     <div class="p-6 bg-white border-b border-gray-200">
                         <p>Name: {{ props.website.name }}</p>
                         <p>Url: {{ props.website.url }}</p>
+                    </div>
+                    <div>
+                        <div v-for="status in props.website.statuses" :key="status.id"
+                            class="flex flex-wrap items-center justify-between gap-4 w-full border-b p-2">
+                            
+                            <p class="text-base leading-6" :class="getStatusColor(status.status)">
+                                {{ status.status }}
+                            </p>
+                            <p class="text-base leading-6 text-gray-500">
+                                {{ status.error }}
+                            </p>
+                            <p class="text-sm leading-6 text-gray-500">
+                                {{ new Date(status.created_at).toLocaleString() }}
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
