@@ -1,6 +1,14 @@
 <script setup>
 import BreezeAuthenticatedLayout from '@/Layouts/Authenticated.vue';
-import { Head } from '@inertiajs/inertia-vue3';
+import { Head, Link } from '@inertiajs/inertia-vue3';
+import Button from '@/Components/Button.vue';
+
+const props = defineProps({
+    websites: {
+        type: Array,
+        required: true,
+    },
+})
 </script>
 
 <template>
@@ -17,7 +25,33 @@ import { Head } from '@inertiajs/inertia-vue3';
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6 bg-white border-b border-gray-200">
-                        You're logged in!
+                        <div class="mb-8">
+                            <Link :href="route('website.create')">
+                                <Button class="float-right">
+                                    Add a website
+                                </Button>
+                            </Link>
+                            <div v-if="props.websites.length == 0">There are no monitored websites.</div>
+                            <div v-else>Showing {{ websites.length }} monitored  {{ websites.length == 1 ? 'site' : 'sites'}}.</div>
+                        </div>
+                        
+                        <div v-for="website in props.websites" :key="website.id">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-16 w-full border-b p-2">
+                                    <h3 class="text-lg leading-6 font-medium text-gray-900">
+                                        {{ website.name }}
+                                    </h3>
+                                    <p class="text-base leading-6 text-gray-500">
+                                        {{ website.url }}
+                                    </p>
+                                    <div class="w-full text-right">
+                                        <Link :href="route('website.show', website.id)" class="text-sm leading-5 font-medium text-indigo-600 hover:text-indigo-500">
+                                            View
+                                        </Link>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

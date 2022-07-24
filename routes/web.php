@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\WebsiteController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -16,16 +17,17 @@ use Inertia\Inertia;
 */
 
 Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
+    return Inertia::render('Auth/Login');
 });
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::group(['middleware' => ['auth', 'verified']], function () {
+    Route::get('/dashboard', [WebsiteController::class, 'index'])->name('dashboard');
+    Route::get('/website/create', [WebsiteController::class, 'create'])->name('website.create');
+    Route::get('/website/{website}', [WebsiteController::class, 'show'])->name('website.show');
+    Route::get('/website/{website}/edit', [WebsiteController::class, 'edit'])->name('website.edit');
+    Route::post('/website/{website}', [WebsiteController::class, 'update'])->name('website.update');
+    Route::delete('/website/{website}', [WebsiteController::class, 'destroy'])->name('website.destroy');
+    Route::post('/website', [WebsiteController::class, 'store'])->name('website.store');
+});
 
 require __DIR__.'/auth.php';
