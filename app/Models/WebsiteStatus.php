@@ -5,17 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Website extends Model
+class WebsiteStatus extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'name',
-        'url',
+        'status',
+        'error',
     ];
-
-    public function websiteStatus()
+    
+    public function website()
     {
-        return $this->hasMany(WebsiteStatus::class);
+        return $this->belongsTo(Website::class);
     }
 }

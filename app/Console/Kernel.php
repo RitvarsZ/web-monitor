@@ -4,6 +4,8 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use App\Jobs\RecordStatus;
+use App\Models\Website;
 
 class Kernel extends ConsoleKernel
 {
@@ -15,7 +17,9 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+        foreach(Website::all() as $website) {
+            $schedule->job(new RecordStatus($website))->everyMinute();
+        }
     }
 
     /**
