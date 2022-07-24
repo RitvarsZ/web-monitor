@@ -16,7 +16,7 @@ class WebsiteController extends Controller
      */
     public function index()
     {
-        $websites = Website::all();
+        $websites = Website::with('latestStatus')->get();
 
         return Inertia::render('Dashboard', [
             'websites' => $websites,

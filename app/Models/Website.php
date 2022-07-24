@@ -13,8 +13,13 @@ class Website extends Model
         'name',
         'url',
     ];
+    
+    public function latestStatus()
+    {
+        return $this->hasOne(WebsiteStatus::class)->latest();
+    }
 
-    public function websiteStatus()
+    public function statuses()
     {
         return $this->hasMany(WebsiteStatus::class);
     }

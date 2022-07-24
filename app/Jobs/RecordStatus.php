@@ -39,7 +39,7 @@ class RecordStatus implements ShouldQueue
      */
     public function handle(StatusService $statusService)
     {
-        $prevStatus = $this->website->websiteStatus()->latest()->first();
+        $prevStatus = $this->website->latestStatus();
         $status = $statusService->recordStatus($this->website->url);
 
         // If the status has changed, create a new record.
@@ -47,6 +47,6 @@ class RecordStatus implements ShouldQueue
             return;
         }
 
-        $this->website->websiteStatus()->create($status);
+        $this->website->statuses()->create($status);
     }
 }

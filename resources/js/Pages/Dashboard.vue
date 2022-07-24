@@ -7,8 +7,23 @@ const props = defineProps({
     websites: {
         type: Array,
         required: true,
-    },
-})
+    }
+});
+
+const getStatusColor = (status) => {
+    switch (true) {
+        case status >= 100 && status < 200:
+            return 'text-blue-500';
+        case status >= 200 && status < 300:
+            return 'text-green-500';
+        case status >= 300 && status < 400:
+            return 'text-yellow-500';
+        case status >= 400 && status < 500:
+            return 'text-red-500';
+        default:
+            return 'text-black-500';
+    }
+};
 </script>
 
 <template>
@@ -36,19 +51,26 @@ const props = defineProps({
                         </div>
                         
                         <div v-for="website in props.websites" :key="website.id">
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center gap-16 w-full border-b p-2">
-                                    <h3 class="text-lg leading-6 font-medium text-gray-900">
-                                        {{ website.name }}
-                                    </h3>
-                                    <p class="text-base leading-6 text-gray-500">
-                                        {{ website.url }}
-                                    </p>
-                                    <div class="w-full text-right">
-                                        <Link :href="route('website.show', website.id)" class="text-sm leading-5 font-medium text-indigo-600 hover:text-indigo-500">
-                                            View
-                                        </Link>
-                                    </div>
+                            <div class="flex flex-wrap items-center justify-between gap-4 w-full border-b p-2">
+                                <h3 class="text-lg leading-6 font-medium text-gray-900">
+                                    {{ website.name }}
+                                </h3>
+                                <p class="text-base leading-6 text-gray-500">
+                                    {{ website.url }}
+                                </p>
+                                <p class="font-bold" :class="getStatusColor(website.latest_status.status)">
+                                    {{ website.latest_status.status}}
+                                </p>
+                                <p>
+                                    {{ website.latest_status.error }}
+                                </p>
+                                <p class="text-sm">
+                                    {{ new Date(website.latest_status.created_at).toLocaleString() }}
+                                </p>
+                                <div class="text-right text-gray-500">
+                                    <Link :href="route('website.show', website.id)" class="text-sm leading-5 font-medium text-indigo-600 hover:text-indigo-500">
+                                        View
+                                    </Link>
                                 </div>
                             </div>
                         </div>
