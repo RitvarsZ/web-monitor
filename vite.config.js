@@ -7,6 +7,7 @@ export default defineConfig({
         hmr: {
             host: 'localhost',
         },
+        https: true,
     },
     plugins: [
         laravel({
